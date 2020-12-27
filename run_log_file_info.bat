@@ -1,0 +1,1 @@
+scrapy crawl spider -o results.csv --logfile=log.txt --loglevel=INFO
