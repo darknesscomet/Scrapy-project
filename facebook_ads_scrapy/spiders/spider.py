@@ -42,7 +42,11 @@ class SpiderSpider(scrapy.Spider):
             'Referer': self.referrer.format(page_id),
             'Content-Type': 'application/x-www-form-urlencoded',
         }
+        print("003 Referer", self.referrer.format(page_id))
+        print("004 url", self.api_search.format(urlencode(params)))
+        print("005 urlencode(self.data)", urlencode(self.data))
         return Request(url=self.api_search.format(urlencode(params)),
+                    #   url=self.referrer.format(page_id),
                       method="POST",
                       body=urlencode(self.data),
                       headers=headers,
@@ -60,7 +64,9 @@ class SpiderSpider(scrapy.Spider):
                 if url:
                     try:
                         query = urlsplit(url).query
+                        print("001 urlsplited url", query)
                         page_id = parse_qs(query)['view_all_page_id'][0].strip()
+                        print("002 page_id", page_id)
                         if page_id.isdigit():
                             yield self.search_request(page_id)
                         else:
@@ -72,15 +78,20 @@ class SpiderSpider(scrapy.Spider):
     def parse(self, response):
         try:
             ad_ids = response.meta['ad_ids']
+            print("006 ad_ids=response.meta['ad_ids]", ad_ids)
         except:
             pass
         page_id = response.meta['page_id']
+        print("007 page_id=response.meta['page_id']", page_id)
         jdata = response.meta['jdata']
         try:
             page_profile_picture_url = response.meta['page_profile_picture_url']
         except:
             page_profile_picture_url = None
+        print("008 response.meta['page_profile_picture_url']", page_profile_picture_url)
+        print("009 response.meta['jdata']", jdata)
         forwardCursor = jdata['payload']['forwardCursor']
+        print("010 jdata['payload']['forwardCursor']", forwardCursor)
 
         for r in jdata['payload']['results']:
             for r2 in r:
