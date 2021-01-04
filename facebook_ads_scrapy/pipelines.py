@@ -21,31 +21,13 @@ class MyFilesPipeline(FilesPipeline):
     type_image = 2
     type_video = 3
 
-    # def generate_file_path(self, file_type, url, page_id=None):
-    #     path = None
-    #     orig_filename = os.path.basename(urlparse(url).path)
-    #     if file_type == self.type_image:
-    #         path = self.path_images + orig_filename
-    #     elif file_type == self.type_video:
-    #         path = self.path_videos + orig_filename
-    #     elif file_type == self.type_profile_picture:
-    #         ext = '.jpg'
-    #         try:
-    #             suffix = pathlib.Path(orig_filename).suffix
-    #             if suffix:
-    #                 ext = suffix
-    #         except:
-    #             pass
-    #         path = '{}{}{}'.format(self.path_profile_pictures, page_id, ext)
-    #     return path
-
     def generate_file_path(self, file_type, url, page_id='noPageId'):
         path = None
         orig_filename = os.path.basename(urlparse(url).path)
         if file_type == self.type_image:
-            path = self.path_images + page_id + '/' + orig_filename
+            path = self.path_images + str(page_id) + '/' + orig_filename
         elif file_type == self.type_video:
-            path = self.path_videos + page_id + '/' + orig_filename
+            path = self.path_videos + str(page_id) + '/' + orig_filename
         elif file_type == self.type_profile_picture:
             ext = '.jpg'
             try:
@@ -68,12 +50,12 @@ class MyFilesPipeline(FilesPipeline):
         for i in range(1, IMAGES_COUNT+1):
             key = 'image_url{}'.format(i)
             if key in item and item[key]:
-                yield scrapy.Request(url=item[key], meta={"file_type":self.type_image})
+                yield scrapy.Request(url=item[key], meta={"file_type":self.type_image, 'page_id': item['page_id']})
 
         for i in range(1, VIDEOS_COUNT+1):
             key = 'video_url{}'.format(i)
             if key in item and item[key]:
-                yield scrapy.Request(url=item[key], meta={"file_type":self.type_video})
+                yield scrapy.Request(url=item[key], meta={"file_type":self.type_video , 'page_id': item['page_id']})
 
         if 'page_profile_picture_url' in item and item['page_profile_picture_url']:
             yield scrapy.Request(url=item['page_profile_picture_url'], meta={"file_type":self.type_profile_picture, 'page_id': item['page_id']})
