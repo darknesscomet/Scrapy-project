@@ -21,11 +21,29 @@ class MyFilesPipeline(FilesPipeline):
     type_image = 2
     type_video = 3
 
+    # def generate_file_path(self, file_type, url, page_id=None):
+    #     path = None
+    #     orig_filename = os.path.basename(urlparse(url).path)
+    #     if file_type == self.type_image:
+    #         path = self.path_images + orig_filename
+    #     elif file_type == self.type_video:
+    #         path = self.path_videos + orig_filename
+    #     elif file_type == self.type_profile_picture:
+    #         ext = '.jpg'
+    #         try:
+    #             suffix = pathlib.Path(orig_filename).suffix
+    #             if suffix:
+    #                 ext = suffix
+    #         except:
+    #             pass
+    #         path = '{}{}{}'.format(self.path_profile_pictures, page_id, ext)
+    #     return path
+
     def generate_file_path(self, file_type, url, page_id='noPageId'):
         path = None
         orig_filename = os.path.basename(urlparse(url).path)
         if file_type == self.type_image:
-            path = self.path_images + orig_filename
+            path = self.path_images + page_id + '/' + orig_filename
         elif file_type == self.type_video:
             path = self.path_videos + page_id + '/' + orig_filename
         elif file_type == self.type_profile_picture:

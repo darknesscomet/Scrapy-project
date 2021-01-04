@@ -142,6 +142,8 @@ class RandomUserAgentMiddleware(object):
             ua = self.chrome.format(version)
         request.headers.setdefault(b'User-Agent', ua)
 
+        return None
+
 
 class FacebookAdsScrapySpiderMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
