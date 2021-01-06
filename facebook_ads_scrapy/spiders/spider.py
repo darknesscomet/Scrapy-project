@@ -20,7 +20,8 @@ class SpiderSpider(scrapy.Spider):
         '__req': 'n',
         '__beoa': '0',
         '__pc': 'PHASED:DEFAULT',
-        'dpr': '1'
+        'dpr': '1',
+        '__ccg': 'EXCELLENT'
     }
     urls_count = 0
 
